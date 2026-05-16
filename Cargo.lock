@@ -3,5 +3,12 @@
 version = 4
 
 [[package]]
+name = "wasmtriggers-macros"
+version = "0.1.0"
+
+[[package]]
 name = "wasmtriggers-rs"
 version = "0.1.0"
+dependencies = [
+ "wasmtriggers-macros",
+]

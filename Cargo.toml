@@ -1,5 +1,6 @@
 [workspace]
 resolver = "2"
+members = ["wasmtriggers-macros"]
 
 [package]
 name = "wasmtriggers-rs"
@@ -7,6 +8,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+wasmtriggers-macros = { path = "wasmtriggers-macros" }
 
 [[example]]
 name = "simple"
