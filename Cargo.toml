@@ -11,5 +11,5 @@ edition = "2024"
 wasmtriggers-macros = { path = "wasmtriggers-macros" }
 
 [[example]]
-name = "simple"
+name = "kitchen_sink"
 crate-type = ["cdylib"]
