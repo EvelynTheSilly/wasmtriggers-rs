@@ -38,10 +38,11 @@
             bacon
             pkg-config
             openssl
+            cargo-expand
           ];
           shellHook = ''
             if [[ $- == *i* ]]; then
-                nu -e
+                nu
             fi
           '';
         };
