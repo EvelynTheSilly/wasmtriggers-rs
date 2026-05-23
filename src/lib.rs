@@ -1,4 +1,5 @@
 pub mod alloc;
+pub mod chat;
 pub mod log;
 pub mod prelude;
 
