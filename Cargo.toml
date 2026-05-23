@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["wasmtriggers-macros"]
+members = ["wasmtriggers-core","wasmtriggers-macros"]
 
 [package]
 name = "wasmtriggers-rs"
@@ -9,6 +9,7 @@ edition = "2024"
 
 [dependencies]
 wasmtriggers-macros = { path = "wasmtriggers-macros" }
+wasmtriggers-core = { path = "wasmtriggers-core" }
 
 [[example]]
 name = "kitchen_sink"
