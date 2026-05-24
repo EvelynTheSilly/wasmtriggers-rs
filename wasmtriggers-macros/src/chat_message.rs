@@ -1,7 +1,6 @@
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{ItemFn, parse_macro_input, parse_quote, spanned::Spanned};
-use wasmtriggers_core::chat::ChatType;
 
 pub fn chat_message_handler(_attr: TokenStream, item: TokenStream) -> TokenStream {
     let mut input = parse_macro_input!(item as ItemFn);
@@ -22,8 +21,8 @@ pub fn chat_message_handler(_attr: TokenStream, item: TokenStream) -> TokenStrea
     pub extern "C" fn server_message_handler(msg_ptr: u32, msg_len:u32){
         unsafe {
             let message =
-                str::from_utf8_unchecked(slice::from_raw_parts(msg_ptr as *const u8, msg_len as usize));
-            let chat = wasmtriggers_core::chat::ChatType::Game {
+                ::core::str::from_utf8_unchecked(::core::slice::from_raw_parts(msg_ptr as *const u8, msg_len as usize));
+            let chat = ::wasmtriggers_core::chat::ChatType::Game {
                 message
             };
             __internal_chat_message_handler(&chat);
@@ -33,10 +32,10 @@ pub fn chat_message_handler(_attr: TokenStream, item: TokenStream) -> TokenStrea
     pub extern "C" fn chat_message_handler(name_ptr: u32, name_len: u32, msg_ptr: u32, msg_len:u32){
         unsafe {
             let name =
-                str::from_utf8_unchecked(slice::from_raw_parts(name_ptr as *const u8, name_len as usize));
+                ::core::str::from_utf8_unchecked(::core::slice::from_raw_parts(name_ptr as *const u8, name_len as usize));
             let message =
-                str::from_utf8_unchecked(slice::from_raw_parts(msg_ptr as *const u8, msg_len as usize));
-            let chat = wasmtriggers_core::chat::ChatType::Player{
+                ::core::str::from_utf8_unchecked(::core::slice::from_raw_parts(msg_ptr as *const u8, msg_len as usize));
+            let chat = ::wasmtriggers_core::chat::ChatType::Player{
                 player: name,
                 message
             };
