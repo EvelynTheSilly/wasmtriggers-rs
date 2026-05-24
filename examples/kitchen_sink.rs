@@ -1,6 +1,5 @@
 #![no_main]
 
-use std::{slice, str};
 use wasmtriggers_core::chat::ChatType;
 use wasmtriggers_macros::init_function;
 use wasmtriggers_rs::{
