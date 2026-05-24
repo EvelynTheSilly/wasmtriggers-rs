@@ -23,3 +23,8 @@ fn funny_number_detector(chat: &ChatType) {
         send_chat_message("aaaaa so funny hahahahahah");
     }
 }
+
+#[unsafe(no_mangle)]
+pub extern "C" fn on_keypress() {
+    show_chat_message("key pressed");
+}
