@@ -12,5 +12,9 @@ wasmtriggers-macros = { path = "wasmtriggers-macros" }
 wasmtriggers-core = { path = "wasmtriggers-core" }
 
 [[example]]
+name = "coordinate_sender"
+crate-type = ["cdylib"]
+
+[[example]]
 name = "kitchen_sink"
 crate-type = ["cdylib"]
