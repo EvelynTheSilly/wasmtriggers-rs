@@ -32,20 +32,20 @@ pub extern "C" fn on_keyboard_input(action: u32, key_ptr: u32, key_len: u32) {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn on_pressed_KEY_A() {
+pub extern "C" fn on_keypress_a() {
     show_chat_message("key a just pressed");
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn on_released_KEY_A() {
-    show_chat_message("key a just pressed");
+pub extern "C" fn on_keyrelease_a() {
+    show_chat_message("key a just released");
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn on_pressed(ptr: u32, len: u32) {
+pub extern "C" fn on_keypress(ptr: u32, len: u32) {
     let key;
-    unsafe { key = str::from_utf8(slice::from_raw_parts(ptr as *const u8, u32)) }
-    key.inspect(|key| {
+    unsafe { key = str::from_utf8(slice::from_raw_parts(ptr as *const u8, len as usize)) }
+    let _ = key.inspect(|key| {
         show_chat_message(key);
     });
 }
