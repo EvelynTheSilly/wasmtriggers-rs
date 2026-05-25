@@ -39,6 +39,7 @@
             pkg-config
             openssl
             cargo-expand
+            wabt
           ];
           shellHook = ''
             if [[ $- == *i* ]]; then
