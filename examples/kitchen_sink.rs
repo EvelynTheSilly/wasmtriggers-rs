@@ -1,5 +1,7 @@
 #![no_main]
 
+use std::slice;
+
 use wasmtriggers_core::chat::ChatType;
 use wasmtriggers_macros::init_function;
 use wasmtriggers_rs::{
@@ -25,6 +27,25 @@ fn funny_number_detector(chat: &ChatType) {
 }
 
 #[unsafe(no_mangle)]
-pub extern "C" fn on_keypress() {
-    show_chat_message("key pressed");
+pub extern "C" fn on_keyboard_input(action: u32, key_ptr: u32, key_len: u32) {
+    show_chat_message("some keyboard input just happened idk dont ask me");
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn on_pressed_KEY_A() {
+    show_chat_message("key a just pressed");
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn on_released_KEY_A() {
+    show_chat_message("key a just pressed");
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn on_pressed(ptr: u32, len: u32) {
+    let key;
+    unsafe { key = str::from_utf8(slice::from_raw_parts(ptr as *const u8, u32)) }
+    key.inspect(|key| {
+        show_chat_message(key);
+    });
 }
