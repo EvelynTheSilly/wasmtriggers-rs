@@ -1,6 +1,6 @@
 pub mod alloc;
 pub mod chat;
 pub mod log;
-pub mod prelude;
+pub mod player;
 
 pub use wasmtriggers_macros::*;
