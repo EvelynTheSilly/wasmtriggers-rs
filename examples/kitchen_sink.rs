@@ -19,7 +19,6 @@ fn init() {
 fn funny_number_detector(chat: &ChatType) {
     if chat.get_message().contains("67") || chat.get_message().contains("69") {
         show_chat_message("funny number detected!");
-        send_chat_message("aaaaa so funny hahahahahah");
     }
 }
 
