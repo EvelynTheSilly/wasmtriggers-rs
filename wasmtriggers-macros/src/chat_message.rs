@@ -22,7 +22,7 @@ pub fn chat_message_handler(_attr: TokenStream, item: TokenStream) -> TokenStrea
         unsafe {
             let message =
                 ::core::str::from_utf8_unchecked(::core::slice::from_raw_parts(msg_ptr as *const u8, msg_len as usize));
-            let chat = ::wasmtriggers_core::chat::ChatType::Game {
+            let chat = ::wasmtriggers_rs::core::chat::ChatType::Game {
                 message
             };
             __internal_chat_message_handler(&chat);
@@ -35,7 +35,7 @@ pub fn chat_message_handler(_attr: TokenStream, item: TokenStream) -> TokenStrea
                 ::core::str::from_utf8_unchecked(::core::slice::from_raw_parts(name_ptr as *const u8, name_len as usize));
             let message =
                 ::core::str::from_utf8_unchecked(::core::slice::from_raw_parts(msg_ptr as *const u8, msg_len as usize));
-            let chat = ::wasmtriggers_core::chat::ChatType::Player{
+            let chat = ::wasmtriggers_rs::core::chat::ChatType::Player{
                 player: name,
                 message
             };
