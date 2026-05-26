@@ -1,13 +1,10 @@
 #![no_main]
 
-use std::slice;
-
-use wasmtriggers_core::chat::ChatType;
-use wasmtriggers_macros::init_function;
 use wasmtriggers_rs::{
     chat::{send_chat_message, show_chat_message},
-    chat_message_handler,
+    core::chat::ChatType,
     log::*,
+    macros::{chat_message_handler, init_function},
 };
 
 #[init_function]
