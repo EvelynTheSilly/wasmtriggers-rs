@@ -12,7 +12,7 @@ wasmtriggers-macros = { path = "wasmtriggers-macros" }
 wasmtriggers-core = { path = "wasmtriggers-core" }
 
 [[example]]
-name = "coordinate_sender"
+name = "coordinate_keybind"
 crate-type = ["cdylib"]
 
 [[example]]
