@@ -15,6 +15,10 @@ impl ChatComponent {
         self.on_click = Some(on_click.into());
         self
     }
+    pub fn add(self, other: ChatComponent) -> ChatMessage {
+        let message: ChatMessage = self.into();
+        message.add(other)
+    }
 }
 impl Into<ChatMessage> for ChatComponent {
     fn into(self) -> ChatMessage {
