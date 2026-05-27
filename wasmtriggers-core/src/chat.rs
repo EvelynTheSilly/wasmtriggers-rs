@@ -1,3 +1,8 @@
+pub mod click_event;
+pub mod color;
+pub mod component;
+pub mod message;
+
 #[derive(Debug)]
 pub enum ChatType<'a> {
     Game { message: &'a str },
