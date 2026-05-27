@@ -1,9 +1,11 @@
+use crate::util::assert_signature;
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{ItemFn, parse_macro_input, parse_quote, spanned::Spanned};
 
 pub fn chat_message_handler(_attr: TokenStream, item: TokenStream) -> TokenStream {
     let mut input = parse_macro_input!(item as ItemFn);
+    assert_signature(&input, &[syn::parse_quote!(ChatType)], None);
     input.sig.ident = parse_quote!(__internal_chat_message_handler);
     let vis = &input.vis;
     let sig = &input.sig;

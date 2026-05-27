@@ -4,6 +4,7 @@ use proc_macro::TokenStream;
 
 mod chat_message;
 mod init;
+mod util;
 
 #[proc_macro_attribute]
 pub fn init_function(attr: TokenStream, item: TokenStream) -> TokenStream {

@@ -1,9 +1,11 @@
+use crate::util::assert_signature;
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{Attribute, ItemFn, parse_macro_input, parse_quote, spanned::Spanned};
 
 pub fn init_function(_attr: TokenStream, item: TokenStream) -> TokenStream {
     let mut input = parse_macro_input!(item as ItemFn);
+    assert_signature(&input, &[], None);
     input.sig.ident = parse_quote!(init_handler);
     let vis = &input.vis;
     let sig = &input.sig;
