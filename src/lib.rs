@@ -4,6 +4,7 @@ pub mod alloc;
 pub mod chat;
 pub mod log;
 pub mod player;
+pub mod title;
 
 pub use wasmtriggers_core as core;
 pub use wasmtriggers_macros as macros;

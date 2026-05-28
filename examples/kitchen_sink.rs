@@ -6,6 +6,7 @@ use wasmtriggers_rs::{
     core::chat::{ChatType, component::literal},
     log::*,
     macros::{chat_message_handler, init_function},
+    title::set_title,
 };
 
 #[init_function]
@@ -19,13 +20,8 @@ fn init() {
 #[chat_message_handler]
 fn funny_number_detector(chat: &ChatType) {
     if chat.get_message().contains("67") {
-        show_chat_message(
-            literal("funny number spotted", Color::new(227, 28, 121))
-                .click(ClickEvent::OpenUrl(
-                    "https://www.youtube.com/watch?v=XEFZ30Cvdnc".to_owned(),
-                ))
-                .hover("click me!", Color::new(138, 206, 0)),
-        );
+        show_chat_message(literal("funny number spotted", Color::new(227, 28, 121)));
+        set_title(literal("SIX SEVENNNNNN", Color::new(67, 67, 67)));
     }
 }
 
