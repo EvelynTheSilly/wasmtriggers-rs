@@ -23,7 +23,9 @@ impl ChatComponent {
 }
 impl From<ChatComponent> for ChatMessage {
     fn from(item: ChatComponent) -> ChatMessage {
-        ChatMessage::empty().add(item)
+        let mut temp = ChatMessage::empty();
+        temp.components.push(item);
+        temp
     }
 }
 
