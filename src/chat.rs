@@ -1,3 +1,5 @@
+use std::marker::PhantomData;
+
 use wasmtriggers_core::chat::{color::Color, message::ChatMessage};
 
 use crate::log::info;
@@ -14,7 +16,57 @@ unsafe extern "C" {
 
 pub fn show_chat_message(msg: impl Into<ChatMessage>) {
     let msg: ChatMessage = msg.into();
-    let mut vec = Vec::<AbiChatComponent>::new();
+    let vec = make_abi_message(&msg);
+
+    info(&format!(
+        "sending out ptr {} len {}",
+        vec.as_ptr() as u32,
+        vec.len() as u32
+    ));
+
+    unsafe {
+        extern_show_chat_message(vec.as_ptr() as u32, vec.len() as u32);
+    }
+}
+
+pub fn send_chat_message(msg: &str) {
+    unsafe {
+        extern_send_chat_message(msg.as_ptr() as u32, msg.len() as u32);
+    }
+}
+
+pub fn send_command(msg: &str) {
+    unsafe {
+        extern_send_command(msg.as_ptr() as u32, msg.len() as u32);
+    }
+}
+
+#[repr(C)]
+pub(crate) struct AbiChatComponent<'a> {
+    text_pointer: u32,
+    text_len: u32,
+    /// packed rbg 8bit per color, first byte ignored
+    text_color: u32,
+    hover_pointer: u32,
+    hover_len: u32,
+    /// packed rbg 8bit per color, first byte ignored
+    hover_color: u32,
+    click_action: u32,
+    click_pointer: u32,
+    click_len: u32,
+    _phantom: PhantomData<&'a ()>,
+}
+
+const fn pack_color(color: &Color) -> u32 {
+    let mut acc = 0u32;
+    acc += (color.r as u32) << 16;
+    acc += (color.g as u32) << 8;
+    acc += color.b as u32;
+    acc
+}
+
+pub(crate) fn make_abi_message<'a>(msg: &'a ChatMessage) -> Vec<AbiChatComponent<'a>> {
+    let mut vec = Vec::<AbiChatComponent<'a>>::new();
 
     for component in &msg.components {
         let hover = {
@@ -45,50 +97,8 @@ pub fn show_chat_message(msg: impl Into<ChatMessage>) {
             click_action: on_click.0,
             click_pointer: on_click.1,
             click_len: on_click.2,
+            _phantom: PhantomData,
         });
     }
-    info(&format!(
-        "sending out ptr {} len {}",
-        vec.as_ptr() as u32,
-        vec.len() as u32
-    ));
-
-    unsafe {
-        extern_show_chat_message(vec.as_ptr() as u32, vec.len() as u32);
-    }
-}
-
-pub fn send_chat_message(msg: &str) {
-    unsafe {
-        extern_send_chat_message(msg.as_ptr() as u32, msg.len() as u32);
-    }
-}
-
-pub fn send_command(msg: &str) {
-    unsafe {
-        extern_send_command(msg.as_ptr() as u32, msg.len() as u32);
-    }
-}
-
-#[repr(C)]
-struct AbiChatComponent {
-    text_pointer: u32,
-    text_len: u32,
-    /// packed rbg 8bit per color, last byte ignored
-    text_color: u32,
-    hover_pointer: u32,
-    hover_len: u32,
-    /// packed rbg 8bit per color, last byte ignored
-    hover_color: u32,
-    click_action: u32,
-    click_pointer: u32,
-    click_len: u32,
-}
-
-const fn pack_color(color: &Color) -> u32 {
-    let mut acc = 0u32;
-    acc += (color.r as u32) << 16;
-    acc += (color.g as u32) << 8;
-    acc += color.b as u32;
-    acc
+    vec
 }
