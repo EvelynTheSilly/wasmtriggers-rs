@@ -1,3 +1,5 @@
+#![warn(clippy::nursery)]
+
 pub mod alloc;
 pub mod chat;
 pub mod log;

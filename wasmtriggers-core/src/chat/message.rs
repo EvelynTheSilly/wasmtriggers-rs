@@ -5,12 +5,14 @@ pub struct ChatMessage {
 }
 
 impl ChatMessage {
-    pub fn empty() -> Self {
+    pub const fn empty() -> Self {
         ChatMessage { components: vec![] }
     }
-    pub fn add(mut self, other: ChatComponent) -> Self {
-        self.components.push(other);
+    #[allow(clippy::should_implement_trait)]
+    pub fn add(mut self, other: impl Into<ChatMessage>) -> Self {
+        for component in other.into().components {
+            self.components.push(component);
+        }
         self
     }
-    pub fn build() {}
 }

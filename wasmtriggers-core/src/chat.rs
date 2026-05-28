@@ -10,7 +10,7 @@ pub enum ChatType<'a> {
 }
 
 impl<'a> ChatType<'a> {
-    pub fn get_message(&self) -> &'a str {
+    pub const fn get_message(&self) -> &'a str {
         match self {
             Self::Game { message } => message,
             ChatType::Player { player: _, message } => message,

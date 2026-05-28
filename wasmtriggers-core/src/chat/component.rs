@@ -11,18 +11,19 @@ impl ChatComponent {
         self.hover = Some((hover.into(), color.into()));
         self
     }
-    pub fn click(mut self, on_click: ClickEvent) -> Self {
+    pub fn click(mut self, on_click: impl Into<ClickEvent>) -> Self {
         self.on_click = Some(on_click.into());
         self
     }
+    #[allow(clippy::should_implement_trait)]
     pub fn add(self, other: ChatComponent) -> ChatMessage {
         let message: ChatMessage = self.into();
         message.add(other)
     }
 }
-impl Into<ChatMessage> for ChatComponent {
-    fn into(self) -> ChatMessage {
-        ChatMessage::empty().add(self)
+impl From<ChatComponent> for ChatMessage {
+    fn from(item: ChatComponent) -> ChatMessage {
+        ChatMessage::empty().add(item)
     }
 }
 

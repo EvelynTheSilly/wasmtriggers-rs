@@ -18,26 +18,22 @@ pub fn show_chat_message(msg: impl Into<ChatMessage>) {
 
     for component in &msg.components {
         let hover = {
-            if let Some(hover) = &component.hover {
+            component.hover.as_ref().map_or((0, 0, 0), |hover| {
                 (
                     hover.0.as_bytes().as_ptr() as u32,
                     hover.0.len() as u32,
                     pack_color(&hover.1),
                 )
-            } else {
-                (0, 0, 0)
-            }
+            })
         };
         let on_click = {
-            if let Some(on_click) = &component.on_click {
+            component.on_click.as_ref().map_or((0, 0, 0), |on_click| {
                 (
                     on_click.action_id(),
                     on_click.text().as_bytes().as_ptr() as u32,
                     on_click.text().len() as u32,
                 )
-            } else {
-                (0, 0, 0)
-            }
+            })
         };
         vec.push(AbiChatComponent {
             text_pointer: component.text.0.as_bytes().as_ptr() as u32,
@@ -51,14 +47,11 @@ pub fn show_chat_message(msg: impl Into<ChatMessage>) {
             click_len: on_click.2,
         });
     }
-    info(
-        &format!(
-            "sending out ptr {} len {}",
-            vec.as_ptr() as u32,
-            vec.len() as u32
-        )
-        .to_string(),
-    );
+    info(&format!(
+        "sending out ptr {} len {}",
+        vec.as_ptr() as u32,
+        vec.len() as u32
+    ));
 
     unsafe {
         extern_show_chat_message(vec.as_ptr() as u32, vec.len() as u32);
@@ -92,10 +85,10 @@ struct AbiChatComponent {
     click_len: u32,
 }
 
-fn pack_color(color: &Color) -> u32 {
+const fn pack_color(color: &Color) -> u32 {
     let mut acc = 0u32;
     acc += (color.r as u32) << 16;
     acc += (color.g as u32) << 8;
-    acc += (color.b as u32) << 0;
+    acc += color.b as u32;
     acc
 }

@@ -6,7 +6,7 @@ pub enum ClickEvent {
 }
 
 impl ClickEvent {
-    pub fn text(&self) -> &String {
+    pub const fn text(&self) -> &String {
         match self {
             ClickEvent::RunCommand(text) => text,
             ClickEvent::SuggestCommand(text) => text,
@@ -14,7 +14,7 @@ impl ClickEvent {
             ClickEvent::Copy(text) => text,
         }
     }
-    pub fn action_id(&self) -> u32 {
+    pub const fn action_id(&self) -> u32 {
         match self {
             ClickEvent::RunCommand(_) => 1,
             ClickEvent::SuggestCommand(_) => 2,
