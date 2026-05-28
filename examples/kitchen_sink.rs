@@ -3,8 +3,7 @@
 use wasmtriggers_core::chat::{click_event::ClickEvent, color::Color};
 use wasmtriggers_rs::{
     chat::show_chat_message,
-    core::chat::ChatType,
-    core::chat::component::literal,
+    core::chat::{ChatType, component::literal},
     log::*,
     macros::{chat_message_handler, init_function},
 };
@@ -19,7 +18,7 @@ fn init() {
 
 #[chat_message_handler]
 fn funny_number_detector(chat: &ChatType) {
-    if chat.get_message().contains("67") || chat.get_message().contains("69") {
+    if chat.get_message().contains("67") {
         show_chat_message(
             literal("funny number spotted", Color::new(227, 28, 121))
                 .click(ClickEvent::OpenUrl(
