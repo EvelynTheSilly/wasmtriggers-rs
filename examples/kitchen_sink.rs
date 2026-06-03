@@ -5,7 +5,7 @@ use wasmtriggers_rs::{
     chat::show_chat_message,
     core::chat::{ChatType, component::literal},
     log::*,
-    macros::{chat_message_handler, init_function},
+    macros::{chat_message_handler, init_function, on_press, on_release},
     title::set_title,
 };
 
@@ -27,21 +27,13 @@ fn funny_number_detector(chat: &ChatType) {
 
 #[unsafe(no_mangle)]
 #[allow(unused)]
-pub extern "C" fn on_keyboard_input(action: u32, key_ptr: u32, key_len: u32) {
-    // this happens on any keyboard input
-}
+pub extern "C" fn on_keyboard_input(_action: u32, _key_ptr: u32, _key_len: u32) {}
 
-#[unsafe(no_mangle)]
-pub extern "C" fn on_keypress_a() {
-    // this happens when a is pressed
-}
+#[on_press(a)]
+fn handle_a_press() {}
 
-#[unsafe(no_mangle)]
-pub extern "C" fn on_keyrelease_a() {
-    // this happens when a is released
-}
+#[on_release(a)]
+fn handle_a_release() {}
 
-#[unsafe(no_mangle)]
-pub extern "C" fn on_keypress(_ptr: u32, _len: u32) {
-    // this happens on any key press event
-}
+#[on_press]
+fn handle_any_press(_key: &str) {}
