@@ -7,8 +7,18 @@ pub struct ChatComponent {
 }
 
 impl ChatComponent {
-    pub fn hover(mut self, hover: impl Into<String>, color: impl Into<Color>) -> Self {
-        self.hover = Some((hover.into(), color.into()));
+    pub fn with_color(mut self, color: impl Into<Color>) -> Self {
+        self.text.1 = color.into();
+        self
+    }
+    pub fn hover(mut self, hover: impl Into<String>) -> Self {
+        self.hover = Some((hover.into(), Color::new(255, 255, 255)));
+        self
+    }
+    pub fn hover_color(mut self, color: impl Into<Color>) -> Self {
+        if let Some(hover) = self.hover.as_mut() {
+            hover.1 = color.into();
+        }
         self
     }
     pub fn click(mut self, on_click: impl Into<ClickEvent>) -> Self {
@@ -29,9 +39,9 @@ impl From<ChatComponent> for ChatMessage {
     }
 }
 
-pub fn literal(msg: impl Into<String>, color: Color) -> ChatComponent {
+pub fn literal(msg: impl Into<String>) -> ChatComponent {
     ChatComponent {
-        text: (msg.into(), color),
+        text: (msg.into(), Color::new(255, 255, 255)),
         hover: None,
         on_click: None,
     }

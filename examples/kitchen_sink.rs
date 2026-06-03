@@ -20,8 +20,8 @@ fn init() {
 #[chat_message_handler]
 fn funny_number_detector(chat: &ChatType) {
     if chat.get_message().contains("67") {
-        show_chat_message(literal("funny number spotted", Color::new(227, 28, 121)));
-        set_title(literal("SIX SEVENNNNNN", Color::new(67, 67, 67)));
+        show_chat_message(literal("funny number spotted").with_color(Color::new(227, 28, 121)));
+        set_title(literal("SIX SEVENNNNNN").with_color(Color::new(67, 67, 67)));
     }
 }
 
