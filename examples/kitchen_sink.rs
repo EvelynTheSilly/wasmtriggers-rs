@@ -1,6 +1,6 @@
 #![no_main]
 
-use wasmtriggers_core::chat::{click_event::ClickEvent, color::Color};
+use wasmtriggers_core::chat::color::Color;
 use wasmtriggers_rs::{
     chat::show_chat_message,
     core::chat::{ChatType, component::literal},
