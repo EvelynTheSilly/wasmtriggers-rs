@@ -1,0 +1,5 @@
+error: function shouldnt have a extern
+ --> tests/ui/init_with_abi_fails.rs:6:1
+  |
+6 | extern "C" fn should_fail() {}
+  | ^^^^^^^^^^
