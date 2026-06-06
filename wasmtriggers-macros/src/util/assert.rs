@@ -3,7 +3,6 @@ use syn::{FnArg, ItemFn, ReturnType, Type, spanned::Spanned};
 pub fn assert_signature(func: &ItemFn, expected_inputs: &[Type], expected_output: Option<&Type>) {
     let sig = &func.sig;
 
-    // Check parameter count
     if sig.inputs.len() != expected_inputs.len() {
         sig.inputs.span().unwrap().error(format!(
             "expected {} parameters, found {}",
@@ -12,7 +11,6 @@ pub fn assert_signature(func: &ItemFn, expected_inputs: &[Type], expected_output
         ));
     }
 
-    // Check parameter types
     for (arg, expected) in sig.inputs.iter().zip(expected_inputs.iter()) {
         match arg {
             FnArg::Typed(pat_ty) => {
@@ -31,7 +29,6 @@ pub fn assert_signature(func: &ItemFn, expected_inputs: &[Type], expected_output
         }
     }
 
-    // Check return type
     match (&sig.output, expected_output) {
         (ReturnType::Default, None) => {}
 
