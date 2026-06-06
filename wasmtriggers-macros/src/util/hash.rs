@@ -18,7 +18,7 @@ pub fn hash_function_name(fn_item: &ItemFn) -> Ident {
     }
 
     let hash = hasher.finish();
-    let name = format!("{}__{:016x}", fn_item.sig.ident, hash);
+    let name = format!("HASH{:016x}", hash);
 
     Ident::new(&name, fn_item.sig.ident.span())
 }

@@ -11,10 +11,12 @@ use wasmtriggers_rs::{
 
 #[init_function]
 fn init() {
-    debug("debug");
-    info("info");
-    warn("warn");
-    error("error");
+    info("you can initialise here");
+}
+
+#[init_function]
+fn other_init() {
+    info("or do it again in here");
 }
 
 #[chat_message_handler]

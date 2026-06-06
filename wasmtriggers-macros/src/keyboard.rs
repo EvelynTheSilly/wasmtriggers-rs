@@ -1,4 +1,4 @@
-use crate::util::assert_signature;
+use crate::util::{assert_signature, hash::hash_function_name};
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{ItemFn, parse_macro_input, parse_quote, spanned::Spanned};
@@ -16,7 +16,7 @@ pub fn on_release(attr: TokenStream, item: TokenStream) -> TokenStream {
 }
 
 fn keyboard_macro(attr: TokenStream, item: TokenStream, abi_prefix: &str) -> TokenStream {
-    let mut input = parse_macro_input!(item as ItemFn);
+    let input = parse_macro_input!(item as ItemFn);
 
     if input.sig.abi.is_some() {
         input
@@ -35,35 +35,29 @@ fn keyboard_macro(attr: TokenStream, item: TokenStream, abi_prefix: &str) -> Tok
         .filter(|s| !s.is_empty())
         .collect();
 
-    let internal_ident =
-        quote::format_ident!("__internal__{}", input.sig.ident);
-    input.sig.ident = internal_ident.clone();
-
-    input.attrs.push(syn::parse_quote!(#[allow(non_snake_case)]));
-    let attrs = &input.attrs;
-    let vis = &input.vis;
-    let sig = &input.sig;
-    let block = &input.block;
+    let hash = hash_function_name(&input);
+    let handler = input.sig.ident.clone();
 
     if keys.is_empty() {
         assert_signature(&input, &[parse_quote!(&str)], None);
 
-        let fn_name = quote::format_ident!("{}", abi_prefix);
+        let fn_name = quote::format_ident!("{}__{}", abi_prefix, hash);
         let generated = quote! {
+            #[allow(non_snake_case)]
             #[unsafe(no_mangle)]
             pub extern "C" fn #fn_name(ptr: u32, len: u32) {
                 unsafe {
                     let key_str: &str = ::core::str::from_utf8_unchecked(
                         ::core::slice::from_raw_parts(ptr as *const u8, len as usize)
                     );
-                    #internal_ident(key_str);
+                    #handler(key_str);
                 }
             }
         };
 
         quote! {
             #generated
-            #(#attrs)* #vis #sig #block
+            #input
         }
         .into()
     } else {
@@ -71,18 +65,19 @@ fn keyboard_macro(attr: TokenStream, item: TokenStream, abi_prefix: &str) -> Tok
 
         let mut generated = Vec::new();
         for key in &keys {
-            let fn_name = quote::format_ident!("{}_{}", abi_prefix, key);
+            let fn_name = quote::format_ident!("{}_{}__{}", abi_prefix, key, hash);
             generated.push(quote! {
+                #[allow(non_snake_case)]
                 #[unsafe(no_mangle)]
                 pub extern "C" fn #fn_name() {
-                    #internal_ident();
+                    #handler();
                 }
             });
         }
 
         quote! {
             #(#generated)*
-            #(#attrs)* #vis #sig #block
+            #input
         }
         .into()
     }
