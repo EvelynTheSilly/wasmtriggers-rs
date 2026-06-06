@@ -39,6 +39,7 @@
             pkg-config
             openssl
             cargo-expand
+            cargo-watch
             wabt
           ];
           shellHook = ''
