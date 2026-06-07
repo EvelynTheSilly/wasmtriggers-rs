@@ -1,6 +1,6 @@
 #![no_main]
 
-use wasmtriggers_core::chat::color::Color;
+use wasmtriggers_core::{chat::color::Color, executor::futures::wait_next_gametick};
 use wasmtriggers_rs::{
     chat::show_chat_message,
     core::chat::{ChatType, component::literal},
@@ -15,8 +15,9 @@ fn init() {
 }
 
 #[init_function]
-fn other_init() {
-    info("or do it again in here");
+async fn other_init() {
+    wait_next_gametick().await;
+    info("you can even init in async");
 }
 
 #[chat_message_handler]

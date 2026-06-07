@@ -18,11 +18,25 @@ pub fn init_function(_attr: TokenStream, item: TokenStream) -> TokenStream {
     let hash = hash_function_name(&input);
     let hashed_init_handler = format_ident!("init_handler__{}", hash);
     let initfn = input.sig.ident.clone();
+    let fn_call = match input.sig.asyncness {
+        Some(_) => {
+            quote! {
+                ::wasmtriggers_rs::core::executor::ASYNC_EXECUTOR.spawn(async {
+                    #initfn().await;
+                })
+            }
+        }
+        None => {
+            quote! {
+                #initfn()
+            }
+        }
+    };
     let abi_entry_point = quote! {
         #[allow(non_snake_case)]
         #[unsafe(no_mangle)]
         fn #hashed_init_handler () {
-            #initfn()
+            #fn_call
         }
     };
 
