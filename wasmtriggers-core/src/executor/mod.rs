@@ -5,14 +5,20 @@ use std::{
     task::{Context, Poll, RawWaker, RawWakerVTable, Waker},
 };
 
+pub mod futures;
+
+pub static ASYNC_EXECUTOR: Executor = Executor::new();
+
 pub struct Executor {
     tasks: Mutex<VecDeque<Pin<Box<dyn Future<Output = ()>>>>>,
 }
 
+unsafe impl Sync for Executor {}
+
 impl Executor {
-    pub fn new() -> Self {
+    pub const fn new() -> Self {
         Executor {
-            tasks: VecDeque::new().into(),
+            tasks: Mutex::new(VecDeque::new()),
         }
     }
     pub fn spawn<F>(&self, future: F)

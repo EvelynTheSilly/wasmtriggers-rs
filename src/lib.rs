@@ -1,6 +1,7 @@
 #![warn(clippy::nursery)]
 
 pub mod alloc;
+pub mod r#async;
 pub mod chat;
 pub mod log;
 pub mod player;
