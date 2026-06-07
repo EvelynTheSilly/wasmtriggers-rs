@@ -5,6 +5,7 @@ use proc_macro::TokenStream;
 mod chat_message;
 mod init;
 mod keyboard;
+mod tick;
 mod util;
 
 #[proc_macro_attribute]
@@ -30,4 +31,9 @@ pub fn on_hold(attr: TokenStream, item: TokenStream) -> TokenStream {
 #[proc_macro_attribute]
 pub fn on_release(attr: TokenStream, item: TokenStream) -> TokenStream {
     keyboard::on_release(attr, item)
+}
+
+#[proc_macro_attribute]
+pub fn on_tick(attr: TokenStream, item: TokenStream) -> TokenStream {
+    tick::on_tick(attr, item)
 }

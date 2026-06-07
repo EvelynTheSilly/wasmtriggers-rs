@@ -1,9 +1,10 @@
 use wasmtriggers_core::executor::{ASYNC_EXECUTOR, futures::wait_next_gametick};
+use wasmtriggers_macros::{init_function, on_tick};
 
 use crate::log::info;
 
-#[unsafe(no_mangle)]
-pub extern "C" fn init_handler__async() {
+#[init_function]
+pub fn async_init() {
     info("initing async");
     ASYNC_EXECUTOR.spawn(async {
         info("spawned");
@@ -18,7 +19,7 @@ pub extern "C" fn init_handler__async() {
     });
 }
 
-#[unsafe(no_mangle)]
-pub extern "C" fn on_tick__async() {
+#[on_tick]
+pub fn on_tick_async(_: u32) {
     ASYNC_EXECUTOR.poll_all();
 }

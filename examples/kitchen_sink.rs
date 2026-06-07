@@ -5,7 +5,7 @@ use wasmtriggers_rs::{
     chat::show_chat_message,
     core::chat::{ChatType, component::literal},
     log::*,
-    macros::{chat_message_handler, init_function, on_press, on_release},
+    macros::{chat_message_handler, init_function, on_press, on_release, on_tick},
     title::set_title,
 };
 
@@ -39,3 +39,8 @@ fn handle_a_release() {}
 
 #[on_press]
 fn handle_any_press(_key: &str) {}
+
+#[on_tick]
+fn on_every_tick(_tick: u32) {
+    // this runs every tick
+}
